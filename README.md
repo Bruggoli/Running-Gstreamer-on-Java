@@ -1,8 +1,9 @@
 ### I take no credit for the files or projects linked to in here!
 ### This is me documenting how i got it running on my machine running Arch Linux.
-----
-This was a little more involved than what i expected, im guessing its much easier to just go with maven or gradle for managing java packages and modules. But the learning was good!
 
+
+----
+# Installation instructions
 [Installing java on Arch](https://wiki.archlinux.org/title/Java)</br>
 Make sure you have java installed </br>
 ```bash
@@ -12,11 +13,13 @@ java --version
 
 
 If not, find the version of java you want and install it:
-`sudo pacman -S jdk-openjdk` </br>
+`sudo pacman -S jdk-openjdk`
+
 Java is by default installed to /usr/lib/jvm/
 
-Set a java home path of some kind, i followed the javafx tutorial so its called $PATH_TO_FX:</br>
-`export $PATH_TO_FX=/usr/lib/jvm/{java version}/lib/`
+Set a java home path of some kind, i followed the javafx tutorial so its called $PATH_TO_FX:
+
+`export PATH_TO_FX=/usr/lib/jvm/{java version}/lib/`
 
 Getting gstreamer up and running with java through the terminal is a task:
 First download gstreamer through pacman, together with packages:
@@ -40,17 +43,20 @@ These all need to be moved to a place you know. Its easiest to download to the d
 
 ## Making the java build and run string
 Java needs to be compiled before it can be run.
-Just running javac on the [[FXCamera.java]] test project will cause a bunch of errors because it doesnt know where all the jars are. 
+Just running javac on the FXCamera.java test project will cause a bunch of errors because it doesnt know where all the jars are. 
 We need to point it to the modules using the -cp (CLASS PATH) flag. Confusingly, javafx uses a different (newer?) way to point to modules, using the --module-path flag.
 
 ```bash
 javac -cp .:$PATH_TO_FX/gst1-java-core-{version}.jar:$PATH_TO_FX/gst1-java-fx-{version}.jar:$PATH_TO_FX/jna-{version}.jar \
---module-path $PATH_TO_FX --add-modules javafx-controls FXCamera.java
+--module-path $PATH_TO_FX --add-modules javafx.controls FXCamera.java
 # Use a colon : to separate the paths to the modules we are using
 ```
 
 Then you should be able to run it by doing
 ```bash
 java -cp .:$PATH_TO_FX/gst1-java-core-{version}.jar:$PATH_TO_FX/gst1-java-fx-{version}.jar:$PATH_TO_FX/jna-{version}.jar \
---module-path $PATH_TO_FX --add-modules javafx-controls FXCamera
+--module-path $PATH_TO_FX --add-modules javafx.controls FXCamera
 # Only difference here is literally just changing javac to java, and running the class instead
+``
+
+This was a little more involved than what i expected, im guessing its much easier to just go with maven or gradle for managing java packages and modules. But the learning was good!
